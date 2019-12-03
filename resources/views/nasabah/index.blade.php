@@ -1,50 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-head container-fluid" style="margin-top: 10px;">
-                    <a href="{{ route('nasabah.create') }}" class="btn btnprimary">Tambah Nasabah</a>
-                    <div class="pull-right">
-                        <p>Data Nasabah</p>
-                    </div>
+                <div class="panel-heading">
+                    <h4>Daftar Nasabah
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Tambah Nasabah</a>
+                    </h4>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="nasabah-table">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Dibuat Pada</th>
-                                <th>Diedit Pada</th>
-                                <th colspan="3" style="text-align: center;">Aksi</th>
+                                <th>Email</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($nasabah as $i => $p)
-                            <tr>
-                                <td>{{ $i+1 }}</td>
-                                <td>{{ $p->firstname }} {{ $p->lastname }}</td>
-                                <td>{{ $p->created_at }}</td>
-                                <td>{{ $p->updated_at }}</td>
-                                <td><a href="#" class="btn btn-warning"> Detail</a></td>
-                                <td><a class="btn btn-success" href="#"> Edit</a></td>
-                                <td>
-                                    <form method="post" action="#">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button class="btn btn-danger" type="submit">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+    
+    @include('nasabah.form')
 </div>
+
 @endsection

@@ -12,6 +12,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {{-- dataTables --}}
+    <link href="{{ asset('assets/datatables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+
+    {{-- SweetAlert2 --}}
+    <script src="{{ asset('assets/sweetalert2/sweetalert2.min.js') }}"></script>
+    <link href="{{ asset('assets/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -83,5 +91,54 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+     {{-- Validator --}}
+     <script src="{{ asset('assets/validator/validator.min.js') }}"></script>
+    {{-- dataTables --}}
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $('#nasabah-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('api.nasabah') }}",
+            columns:[
+                {data: 'idNasabah', name: 'idNasabah'},
+                {data: 'firstname', name: 'firstname'},
+                {data: 'email', name: 'email'},
+                {data: 'action', name: 'action', orderable: false, searcable: false},
+            ]
+        })
+
+        function addForm() {
+            save_method = "add";
+            $('input[name=_method]').val('POST');
+            $('#modal-form').modal('show');
+            $('#modal-form form')[0].reset();
+            $('.modal-title').text('Add Nasabah');
+        }
+
+        $(function(){
+            $('#modal-form form').validator().on('submit', function(e){
+                if(!e.isDefaultPrevented()){
+                    var id = $('#idNasabah').val();
+                    (save_method='add') ? url = "{{ url('nasabah') }}" : url = "{{ url('nasabah') . '/' }}"+id;
+                    
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: $('#modal-form form').serialize(),
+                        success: function($data){
+                            $('#modal-form').modal('hide');
+                        },
+                        error: function(){
+                            alert('Ooops! Error occured!');
+                        }
+                    });
+
+                    return false;
+                }
+            })
+        });
+
+    </script>
 </body>
 </html>

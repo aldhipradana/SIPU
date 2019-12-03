@@ -11,6 +11,6 @@ class nasabah extends Model
     use SoftDeletes;
 
     protected $guarded = ['idNasabah','created_at','upadated_at'];
-
+    protected $fillable = ['firstname', 'lastname', 'email', 'phone', 'alamat'];
 
 }

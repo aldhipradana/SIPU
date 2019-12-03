@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\nasabah;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class NasabahController extends Controller
 {
@@ -14,8 +15,7 @@ class NasabahController extends Controller
      */
     public function index()
     {
-        $nasabah = nasabah::all();
-        return view('nasabah.index', compact('nasabah'));
+        return view('nasabah.index');
     }
 
     /**
@@ -36,7 +36,15 @@ class NasabahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'firstname' => $request['firstname'],
+            'lastname' => $request['lastname'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'alamat' => $request['alamat']
+        ];
+        
+        return Nasabah::create($data);
     }
 
     /**
@@ -82,5 +90,16 @@ class NasabahController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiNasabah(){
+        $nasabah = Nasabah::all();
+
+        return DataTables::of($nasabah)
+            ->addColumn( 'action', function($nasabah){
+                return '<a href="#" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> Show</a> ' .
+                '<a onclick="editForm('. $nasabah->idNasabah .')" class="btn btn-primary btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a> ' .
+                '<a onclick="deleteData('. $nasabah->idNasabah .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a>'; 
+            })->make(true);
     }
 }
