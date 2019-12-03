@@ -96,17 +96,17 @@
     {{-- dataTables --}}
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
-        $('#nasabah-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('api.nasabah') }}",
-            columns:[
-                {data: 'idNasabah', name: 'idNasabah'},
-                {data: 'firstname', name: 'firstname'},
-                {data: 'email', name: 'email'},
-                {data: 'action', name: 'action', orderable: false, searcable: false},
-            ]
-        })
+        var tables =    $('#nasabah-table').DataTable({
+                            processing: true,
+                            serverSide: true,
+                            ajax: "{{ route('api.nasabah') }}",
+                            columns:[
+                                {data: 'idNasabah', name: 'idNasabah'},
+                                {data: 'firstname', name: 'firstname'},
+                                {data: 'email', name: 'email'},
+                                {data: 'action', name: 'action', orderable: false, searcable: false},
+                            ]
+                        })
 
         function addForm() {
             save_method = "add";
@@ -128,6 +128,7 @@
                         data: $('#modal-form form').serialize(),
                         success: function($data){
                             $('#modal-form').modal('hide');
+                            tables.ajax.reload();
                         },
                         error: function(){
                             alert('Ooops! Error occured!');
