@@ -1,7 +1,9 @@
 @extends('adminlte::page')
 
 @section('title', 'AdminLTE')
-
+@section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@stop
 @section('content_header')
     <h1>Nasabah List</h1>
 @stop
@@ -25,11 +27,14 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Photo</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
+                    
+                    <a href="/exportnasabah" class="btn btn-info pull-left" style="margin-top: -8px;">Export Nasabah</a>
                 </div>
             </div>
         </div>
@@ -54,6 +59,7 @@
                                 {data: 'idNasabah', name: 'idNasabah'},
                                 {data: 'firstname', name: 'firstname'},
                                 {data: 'email', name: 'email'},
+                                {data: 'show_photo', name: 'show_photo'},
                                 {data: 'action', name: 'action', orderable: false, searcable: false},
                             ]
                         })
@@ -92,6 +98,27 @@
             });
         }
 
+        function deleteData(id){
+            var popup = confirm("Are you sure want to delete this data ?");
+            var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+            if(popup == true){
+                $.ajax({
+                    url: "{{ url('nasabah') }}" + '/' + id,
+                    type: "POST",
+                    data:   {'_method' : 'DELETE', '_token'  : csrf_token},
+                    success : function(data){
+                        tables.ajax.reload();
+                        console.log(data);
+                    },
+                    error: function(){
+                        alert("Oooppss!, Something wrong!");
+                    }
+                })
+            }
+
+        }
+
         $(function(){
             $('#modal-form form').validator().on('submit', function(e){
                 if(!e.isDefaultPrevented()){
@@ -102,7 +129,10 @@
                     $.ajax({
                         url: url,
                         type: "POST",
-                        data: $('#modal-form form').serialize(),
+                        // data: $('#modal-form form').serialize(),
+                        data: new FormData($('#modal-form form')[0]),
+                        contentType: false,
+                        processData: false,
                         success: function($data){
                             $('#modal-form').modal('hide');
                             tables.ajax.reload();

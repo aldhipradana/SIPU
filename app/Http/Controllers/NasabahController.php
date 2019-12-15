@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\nasabah;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use PDF;
 
 class NasabahController extends Controller
 {
@@ -36,15 +37,20 @@ class NasabahController extends Controller
      */
     public function store(Request $request)
     {
-        $data = [
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
-            'email' => $request['email'],
-            'phone' => $request['phone'],
-            'alamat' => $request['alamat']
-        ];
+
+        $input = $request->all();
+        $input['photo'] = null;
+
+        if($request->hasFile('photo')){
+            $input['photo'] = '/upload/photo/' . str_slug($input['firstname'], '-') . '.' . $request->photo->getClientOriginalExtension();
+            $request->photo->move(public_path('/upload/photo/'), $input['photo']);
+        }
+
+        nasabah::create($input);
         
-        return Nasabah::create($data);
+        return response()->json([
+            'success' => true 
+        ]);
     }
 
     /**
@@ -78,18 +84,27 @@ class NasabahController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $idNasabah)
+    public function update(Request $request, $id)
     {
-        $nasabah = Nasabah::where('idNasabah',$idNasabah)->first();
+        
+        $input = $request->all();
+        $nasabah = nasabah::findOrFail($id);
 
-        $nasabah->firstname = $request['firstname'];
-        $nasabah->lastname = $request['lastname'];
-        $nasabah->email = $request['email'];
-        $nasabah->phone = $request['phone'];
-        $nasabah->alamat = $request['alamat'];
-        $nasabah->update();
+        $input['photo'] = $nasabah->photo;
 
-        return $nasabah;
+        if ($request->hasFile('photo')) {
+            if ($nasabah->photo != NULL) {
+                unlink(public_path($nasabah->photo));
+            }
+            $input['photo'] = '/upload/photo/' . str_slug($input['firstname'], '-') . '.' . $request->photo->getClientOriginalExtension();
+            $request->photo->move(public_path('/upload/photo/'), $input['photo']);
+        }
+
+        $nasabah->update($input);
+
+        return response()->json([
+            'success' => true 
+        ]);
     }
 
     /**
@@ -100,17 +115,44 @@ class NasabahController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $nasabah = nasabah::findOrFail($id);
+        if ($nasabah->photo != NULL) {
+            unlink(public_path($nasabah->photo));
+        }
+
+        nasabah::destroy($id);
+
+        return response()->json([
+            'success' => true 
+        ]);
     }
 
     public function apiNasabah(){
-        $nasabah = Nasabah::all();
+        $nasabah = nasabah::all();
 
         return DataTables::of($nasabah)
+            ->addColumn('show_photo', function($nasabah){
+                if ($nasabah->photo == NULL) {
+                    return 'No Image';
+                }
+                return '<img class="rounded-square" height="75" src="'. url($nasabah->photo) .'" alt="">';
+            })
             ->addColumn( 'action', function($nasabah){
                 return '<a href="#" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> Show</a> ' .
                 '<a onclick="editForm('. $nasabah->idNasabah .')" class="btn btn-primary btn-xs"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a> ' .
                 '<a onclick="deleteData('. $nasabah->idNasabah .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a>'; 
-            })->make(true);
+            })->rawColumns(['show_photo', 'action'])->make(true);
     }
+
+    public function exportPDF(){
+        $nasabahs = nasabah::all();
+        
+        $pdf = PDF::loadView('pdf', compact('nasabahs'));
+        $pdf->setPaper('a4', 'potrait');
+
+        return $pdf->stream();
+
+        // return view('pdf', compact('nasabahs'));
+    }
+
 }

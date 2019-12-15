@@ -1,7 +1,7 @@
 <div class="modal" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="POST" class="form-horizontal" data-toggle="validator">
+            <form method="POST" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
                 {{ csrf_field() }} {{ method_field('POST') }}
 
                 <div class="modal-header">
@@ -55,6 +55,13 @@
                             </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="photo" class="col-md-3 control-label">Photo</label>
+                        <div class="col-md-6">
+                            <input type="file" id="photo" name="photo" class="form-control">
+                            <span class="help-block with-errors"></span>
+                    </div>
+                </div>
                 </div>
 
                 <div class="modal-footer">

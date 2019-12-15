@@ -139,8 +139,15 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
+            'text'        => 'Nasabah',
             'url'         => 'nasabah/',
+            'icon'        => 'far fa-user',
+            'label'       => 4,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Data Pinjaman',
+            'url'         => '#',
             'icon'        => 'far fa-file',
             'label'       => 4,
             'label_color' => 'success',
@@ -253,12 +260,39 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.js',
+                    'location' => '/assets/dataTables/js/dataTables.bootstrap.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.css',
+                    'location' => '/assets/dataTables/css/dataTables.bootstrap.min.css',
+                ],
+            ],
+        ],
+        [
+            'name' => 'Validator',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/assets/validator/validator.min.js',
+                ],
+            ],
+        ],
+        [
+            'name' => 'Swal',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/assets/sweetalert2/sweetalert2.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '/assets/sweetalert2/sweetalert2.min.css',
                 ],
             ],
         ],

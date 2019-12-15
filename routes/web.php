@@ -30,3 +30,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/nasabah', 'NasabahController@index')->name('nasabah');
+
+Route::get('/exportnasabah', 'NasabahController@exportPDF')->name('nasabah.export');
