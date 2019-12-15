@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2019 at 02:32 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.9
+-- Generation Time: Dec 15, 2019 at 05:05 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -39,9 +39,10 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2014_10_12_000000_create_users_table', 1),
-(2, '2014_10_12_100000_create_password_resets_table', 1),
-(3, '2019_12_01_070746_create_nasabahs_table', 2);
+(4, '2014_10_12_000000_create_users_table', 1),
+(5, '2014_10_12_100000_create_password_resets_table', 1),
+(6, '2019_12_01_070746_create_nasabahs_table', 1),
+(7, '2019_12_15_133112_add_photo_to_nasabahs_table', 1);
 
 -- --------------------------------------------------------
 
@@ -58,15 +59,16 @@ CREATE TABLE `nasabahs` (
   `alamat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `photo` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `nasabahs`
 --
 
-INSERT INTO `nasabahs` (`idNasabah`, `firstname`, `lastname`, `email`, `phone`, `alamat`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Aldhi', 'Pradana', 'aldhipradana@gmail.com', '082247970603', 'padangsambian', NULL, NULL, NULL);
+INSERT INTO `nasabahs` (`idNasabah`, `firstname`, `lastname`, `email`, `phone`, `alamat`, `created_at`, `updated_at`, `deleted_at`, `photo`) VALUES
+(1, 'Aldhi', 'Pradana', 'aldhipradana@gmail.com', '082247970603', 'jl taman sekar vi e no. 5', '2019-12-15 07:02:13', '2019-12-15 07:02:13', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,7 +103,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@admin.com', '$2y$10$g28T7Z1U8ejML2/1O4ufjuIPUFSEycXW0U9kMJJW36uwiDC9osLki', NULL, '2019-11-30 23:05:31', '2019-11-30 23:05:31');
+(1, 'admin', 'admin@admin.com', '$2y$10$/6HO44HWi36N7eYrLzw0zeKKDpUlgeXDSR2R0MOLM1FObA3LE08Xy', NULL, '2019-12-15 06:34:24', '2019-12-15 06:34:24');
 
 --
 -- Indexes for dumped tables
@@ -140,13 +142,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `nasabahs`
 --
 ALTER TABLE `nasabahs`
-  MODIFY `idNasabah` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idNasabah` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
