@@ -64,9 +64,11 @@ class NasabahController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idNasabah)
     {
-        //
+        $nasabah = Nasabah::where('idNAsabah',$idNasabah)->first();
+
+        return $nasabah;
     }
 
     /**
@@ -76,9 +78,18 @@ class NasabahController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $idNasabah)
     {
-        //
+        $nasabah = Nasabah::where('idNasabah',$idNasabah)->first();
+
+        $nasabah->firstname = $request['firstname'];
+        $nasabah->lastname = $request['lastname'];
+        $nasabah->email = $request['email'];
+        $nasabah->phone = $request['phone'];
+        $nasabah->alamat = $request['alamat'];
+        $nasabah->update();
+
+        return $nasabah;
     }
 
     /**

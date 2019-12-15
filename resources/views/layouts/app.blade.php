@@ -116,11 +116,38 @@
             $('.modal-title').text('Add Nasabah');
         }
 
+        function editForm(id){
+            save_method = 'edit';
+            $('input[name=_method]').val('PATCH');
+            $('#modal-form form')[0].reset();
+            $.ajax({
+                url: "{{ url('nasabah') }}" + '/' + id + "/edit",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $('#modal-form').modal('show');
+                    $('.modal-title').text('Edit Nasabah');
+
+                    $('#idNasabah').val(data.idNasabah);
+                    $('#firstname').val(data.firstname);
+                    $('#lastname').val(data.lastname);
+                    $('#email').val(data.email);
+                    $('#phone').val(data.phone);
+                    $('#alamat').val(data.alamat);
+                       
+                },
+                error: function(){
+                    alert("No data found");
+                }
+            });
+        }
+
         $(function(){
             $('#modal-form form').validator().on('submit', function(e){
                 if(!e.isDefaultPrevented()){
                     var id = $('#idNasabah').val();
-                    (save_method='add') ? url = "{{ url('nasabah') }}" : url = "{{ url('nasabah') . '/' }}"+id;
+                    if (save_method == 'add') url = "{{ url('nasabah') }}";
+                    else url = "{{ url('nasabah') . '/' }}" + id;
                     
                     $.ajax({
                         url: url,
