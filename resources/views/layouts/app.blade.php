@@ -12,14 +12,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    {{-- dataTables --}}
-    <link href="{{ asset('assets/datatables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-
-    {{-- SweetAlert2 --}}
-    <script src="{{ asset('assets/sweetalert2/sweetalert2.min.js') }}"></script>
-    <link href="{{ asset('assets/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -43,7 +35,9 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-
+                    <ul class="nav navbar-nav">
+                        &nbsp;
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -52,20 +46,11 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                            <ul class="nav navbar-nav">
-                                <li>
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>Nasabah <span class="caret"></span> <span class="sr_only"> </span> </a>
-                                    <ul class="dropdown-menu">
-                                            <li> <a href="{{ route('nasabah.index') }}">Daftar Nasabah</a> </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
-                                
+
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ route('logout') }}"
@@ -91,82 +76,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-     {{-- Validator --}}
-     <script src="{{ asset('assets/validator/validator.min.js') }}"></script>
-    {{-- dataTables --}}
-    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript">
-        var tables =    $('#nasabah-table').DataTable({
-                            processing: true,
-                            serverSide: true,
-                            ajax: "{{ route('api.nasabah') }}",
-                            columns:[
-                                {data: 'idNasabah', name: 'idNasabah'},
-                                {data: 'firstname', name: 'firstname'},
-                                {data: 'email', name: 'email'},
-                                {data: 'action', name: 'action', orderable: false, searcable: false},
-                            ]
-                        })
 
-        function addForm() {
-            save_method = "add";
-            $('input[name=_method]').val('POST');
-            $('#modal-form').modal('show');
-            $('#modal-form form')[0].reset();
-            $('.modal-title').text('Add Nasabah');
-        }
-
-        function editForm(id){
-            save_method = 'edit';
-            $('input[name=_method]').val('PATCH');
-            $('#modal-form form')[0].reset();
-            $.ajax({
-                url: "{{ url('nasabah') }}" + '/' + id + "/edit",
-                type: "GET",
-                dataType: "JSON",
-                success: function(data){
-                    $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Nasabah');
-
-                    $('#idNasabah').val(data.idNasabah);
-                    $('#firstname').val(data.firstname);
-                    $('#lastname').val(data.lastname);
-                    $('#email').val(data.email);
-                    $('#phone').val(data.phone);
-                    $('#alamat').val(data.alamat);
-                       
-                },
-                error: function(){
-                    alert("No data found");
-                }
-            });
-        }
-
-        $(function(){
-            $('#modal-form form').validator().on('submit', function(e){
-                if(!e.isDefaultPrevented()){
-                    var id = $('#idNasabah').val();
-                    if (save_method == 'add') url = "{{ url('nasabah') }}";
-                    else url = "{{ url('nasabah') . '/' }}" + id;
-                    
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: $('#modal-form form').serialize(),
-                        success: function($data){
-                            $('#modal-form').modal('hide');
-                            tables.ajax.reload();
-                        },
-                        error: function(){
-                            alert('Ooops! Error occured!');
-                        }
-                    });
-
-                    return false;
-                }
-            })
-        });
-
-    </script>
 </body>
 </html>

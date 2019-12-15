@@ -648,6 +648,61 @@
         "description": "Highlight PHP code in terminal"
     },
     {
+        "name": "jeroennoten/laravel-adminlte",
+        "version": "v2.0.1",
+        "version_normalized": "2.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jeroennoten/Laravel-AdminLTE.git",
+            "reference": "61667b322561c0d0c21f995c329103552c5fb8e7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jeroennoten/Laravel-AdminLTE/zipball/61667b322561c0d0c21f995c329103552c5fb8e7",
+            "reference": "61667b322561c0d0c21f995c329103552c5fb8e7",
+            "shasum": ""
+        },
+        "require": {
+            "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
+            "php": ">=7.0.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6"
+        },
+        "time": "2019-09-29T18:34:01+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "JeroenNoten\\LaravelAdminLte\\ServiceProvider"
+                ]
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "JeroenNoten\\LaravelAdminLte\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jeroen Noten",
+                "email": "jeroennoten@me.com"
+            }
+        ],
+        "description": "Easy AdminLTE integration with Laravel",
+        "keywords": [
+            "AdminLTE",
+            "admin",
+            "administrator",
+            "laravel"
+        ]
+    },
+    {
         "name": "kylekatarnls/update-helper",
         "version": "1.2.0",
         "version_normalized": "1.2.0.0",

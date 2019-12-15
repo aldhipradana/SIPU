@@ -21,3 +21,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('nasabah', 'NasabahController');
 Route::get('api/nasabah', 'NasabahController@apiNasabah')->name('api.nasabah');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/nasabah', 'NasabahController@index')->name('nasabah');
