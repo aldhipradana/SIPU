@@ -40,7 +40,7 @@
         </div>
     </div>
     
-    @include('pinjaman.form')
+    @include('nasabah.form')
 </div>
 
 @stop
@@ -99,23 +99,41 @@
         }
 
         function deleteData(id){
-            var popup = confirm("Are you sure want to delete this data ?");
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
 
-            if(popup == true){
+            swal({
+                title: 'Anda yakin?',
+                text: "Anda tidak akan bisa mengembalikan data ini lagi!",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then( function(){
                 $.ajax({
                     url: "{{ url('nasabah') }}" + '/' + id,
                     type: "POST",
                     data:   {'_method' : 'DELETE', '_token'  : csrf_token},
                     success : function(data){
                         tables.ajax.reload();
-                        console.log(data);
+                        swal({
+                            title: 'Success!',
+                            text: "Data telah dihapus!",
+                            type: 'success',
+                            timer: '1500'
+                        })
                     },
                     error: function(){
-                        alert("Oooppss!, Something wrong!");
+                        swal({
+                            title: 'Oooppss!!',
+                            text: "Oooppss!",
+                            type: 'error',
+                            timer: '1500'
+                        })
                     }
                 })
-            }
+            });
+                
 
         }
 
@@ -136,9 +154,20 @@
                         success: function($data){
                             $('#modal-form').modal('hide');
                             tables.ajax.reload();
+                            swal({
+                                title: 'Success!',
+                                text: "Berhasil memproses data!",
+                                type: 'success',
+                                timer: '1500'
+                            })
                         },
                         error: function(){
-                            alert('Ooops! Error occured!');
+                            swal({
+                                title: 'Oooppss!!',
+                                text: "Oooppss!",
+                                type: 'error',
+                                timer: '1500'
+                            })
                         }
                     });
 

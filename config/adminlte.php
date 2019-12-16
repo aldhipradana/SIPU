@@ -142,14 +142,18 @@ return [
             'text'        => 'Nasabah',
             'url'         => 'nasabah/',
             'icon'        => 'far fa-user',
-            'label'       => 4,
             'label_color' => 'success',
         ],
         [
             'text'        => 'Data Pinjaman',
-            'url'         => '#',
+            'url'         => 'pinjaman/',
             'icon'        => 'far fa-file',
-            'label'       => 4,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Data Angsuran',
+            'url'         => 'angsuran/',
+            'icon'        => 'far fa-file',
             'label_color' => 'success',
         ],
         ['header' => 'account_settings'],
@@ -323,17 +327,17 @@ return [
                 ],
             ],
         ],
-        [
-            'name' => 'Sweetalert2',
-            'active' => true,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
-                ],
-            ],
-        ],
+        // [
+        //     'name' => 'Sweetalert2',
+        //     'active' => true,
+        //     'files' => [
+        //         [
+        //             'type' => 'js',
+        //             'asset' => false,
+        //             'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+        //         ],
+        //     ],
+        // ],
         [
             'name' => 'Pace',
             'active' => true,

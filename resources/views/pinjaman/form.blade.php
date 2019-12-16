@@ -13,55 +13,46 @@
 
                 <div class="modal-body">
                     
-                    <input type="hidden" id="idNasabah" name="idNasabah">
+                    <input type="hidden" id="idPinjaman" name="idPinjaman">
 
                     <div class="form-group">
-                        <label for="firstname" class="col-md-3 control-label">First Name</label>
+                        <label for="idNasabah" class="col-md-3 control-label">Nama Nasabah</label>
                         <div class="col-md-6">
-                            <input type="text" id="firstname" name="firstname" class="form-control" autofocus required>
+                            <input type="number" id="idNasabah" name="idNasabah" class="form-control" autofocus required>
+                            {{-- <select id="idNasabah" name="idNasabah" class="form-control" id="exampleFormControlSelect1">
+                                
+                              </select> --}}
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                            <label for="lastname" class="col-md-3 control-label">Last Name</label>
+                            <label for="bunga" class="col-md-3 control-label">Bunga (%)</label>
                             <div class="col-md-6">
-                                <input type="text" id="lastname" name="lastname" class="form-control" autofocus required>
+                                <input type="number" id="bunga" name="bunga" class="form-control" autofocus required>
                                 <span class="help-block with-errors"></span>
                             </div>
                     </div>
 
                     <div class="form-group">
-                            <label for="email" class="col-md-3 control-label">Email</label>
-                            <div class="col-md-6">
-                                <input type="email" id="email" name="email" class="form-control" autofocus required>
-                                <span class="help-block with-errors"></span>
-                            </div>
-                    </div>
-
-                    <div class="form-group">
-                            <label for="phone" class="col-md-3 control-label">Phone</label>
-                            <div class="col-md-6">
-                                <input type="tel" id="phone" name="phone" class="form-control" autofocus required>
-                                <span class="help-block with-errors"></span>
-                            </div>
-                    </div>
-
-                    <div class="form-group">
-                            <label for="alamat" class="col-md-3 control-label">Alamat</label>
-                            <div class="col-md-6">
-                                <input type="text" id="alamat" name="alamat" class="form-control" autofocus required>
-                                <span class="help-block with-errors"></span>
-                            </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="photo" class="col-md-3 control-label">Photo</label>
+                        <label for="jmlPinjam" class="col-md-3 control-label">Jumlah Pinjaman (Rp)</label>
                         <div class="col-md-6">
-                            <input type="file" id="photo" name="photo" class="form-control">
+                            <input type="number" id="jmlPinjam" name="jmlPinjam" class="form-control" autofocus required>
                             <span class="help-block with-errors"></span>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                            <label for="phone" class="col-md-3 control-label">Status</label>
+                            <div class="col-md-6">
+                                <select id="status" name="status" class="form-control" id="status">
+                                    <option value="aktif" name="aktif"> aktif </option>
+                                    <option value="nonaktif" name="nonaktif"> nonaktif </option>
+                                  </select>
+                                <span class="help-block with-errors"></span>
+                            </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

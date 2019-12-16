@@ -138,8 +138,7 @@ class NasabahController extends Controller
                 return '<img class="rounded-square" height="75" src="'. url($nasabah->photo) .'" alt="">';
             })
             ->addColumn( 'action', function($nasabah){
-                return '<a href="#" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> Show</a> ' .
-                '<a onclick="editForm('. $nasabah->idNasabah .')" class="btn btn-primary btn-xs"><i class="fa fa-pen" aria-hidden="true"></i> Edit</a> ' .
+                return '<a onclick="editForm('. $nasabah->idNasabah .')" class="btn btn-primary btn-xs"><i class="fa fa-pen" aria-hidden="true"></i> Edit</a> ' .
                 '<a onclick="deleteData('. $nasabah->idNasabah .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a>'; 
             })->rawColumns(['show_photo', 'action'])->make(true);
     }

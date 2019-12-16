@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 @section('content_header')
-    <h1>Pinjaman List</h1>
+    <h1>Daftar Pinjaman</h1>
 @stop
 
 
@@ -16,8 +16,8 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Daftar Nasabah
-                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Tambah Nasabah</a>
+                    <h4>Daftar Pinjaman
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Tambah Pinjaman</a>
                     </h4>
                 </div>
                 <div class="panel-body">
@@ -36,13 +36,13 @@
                         <tbody></tbody>
                     </table>
                     
-                    <a href="/exportnasabah" class="btn btn-info pull-left" style="margin-top: -8px;">Export Nasabah</a>
+                    <a href="/exportpinjaman" class="btn btn-info pull-left" style="margin-top: -8px;">Export Pinjaman</a>
                 </div>
             </div>
         </div>
     </div>
     
-    @include('nasabah.form')
+    @include('pinjaman.form')
 </div>
 
 @stop
@@ -73,7 +73,40 @@
             $('input[name=_method]').val('POST');
             $('#modal-form').modal('show');
             $('#modal-form form')[0].reset();
-            $('.modal-title').text('Add Nasabah');
+            $('.modal-title').text('Add Pinjaman');
+            // $.ajax({
+            //     url: "{{ url('pinjaman/getNasabah') }}",
+            //     type: "GET",
+            //     dataType: "JSON",
+            //     success: function(response){
+            //         $('#modal-form').modal('show');
+            //         $('.modal-title').text('Add Pinjaman');
+
+            //         var len = 0;
+            //         if(response['data'] != null){
+            //             len = response['data'].length;
+            //         }
+
+            //         if(len > 0){
+            //             // Read data and create <option >
+            //             for(var i=0; i<len; i++){
+
+            //                 var id = response['data'][i].idNasabah;
+            //                 var name = response['data'][i].nasabahs.firstname;
+
+            //                 var option = "<option value='"+id+"'>"+name+"</option>"; 
+
+            //                 $("#idNasabah").append(option); 
+            //             }
+            //         }
+
+            //         $('#idNasabah').val(data.idNasabah);
+                        
+            //     },
+            //     error: function(){
+            //         alert("No data found");
+            //     }
+            // });
         }
 
         function editForm(id){
@@ -81,19 +114,18 @@
             $('input[name=_method]').val('PATCH');
             $('#modal-form form')[0].reset();
             $.ajax({
-                url: "{{ url('nasabah') }}" + '/' + id + "/edit",
+                url: "{{ url('pinjaman') }}" + '/' + id + "/edit",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
                     $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Nasabah');
+                    $('.modal-title').text('Edit Pinjaman');
 
+                    $('#idPinjaman').val(data.idPinjaman);
                     $('#idNasabah').val(data.idNasabah);
-                    $('#firstname').val(data.firstname);
-                    $('#lastname').val(data.lastname);
-                    $('#email').val(data.email);
-                    $('#phone').val(data.phone);
-                    $('#alamat').val(data.alamat);
+                    $('#bunga').val(data.bunga);
+                    $('#jmlPinjam').val(data.jmlPinjam);
+                    $('#status').val(data.status);
                         
                 },
                 error: function(){
@@ -103,46 +135,72 @@
         }
 
         function deleteData(id){
-            var popup = confirm("Are you sure want to delete this data ?");
+            
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
 
-            if(popup == true){
+            swal({
+                title: 'Anda yakin?',
+                text: "Anda tidak akan bisa mengembalikan data ini lagi!",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then( function(){
                 $.ajax({
-                    url: "{{ url('nasabah') }}" + '/' + id,
+                    url: "{{ url('pinjaman') }}" + '/' + id,
                     type: "POST",
                     data:   {'_method' : 'DELETE', '_token'  : csrf_token},
                     success : function(data){
                         tables.ajax.reload();
-                        console.log(data);
+                        swal({
+                            title: 'Success!',
+                            text: "Data telah dihapus!",
+                            type: 'success',
+                            timer: '1500'
+                        })
                     },
                     error: function(){
-                        alert("Oooppss!, Something wrong!");
+                        swal({
+                            title: 'Oooppss!!',
+                            text: "Oooppss!",
+                            type: 'error',
+                            timer: '1500'
+                        })
                     }
-                })
-            }
+                });
+            });
 
         }
 
         $(function(){
             $('#modal-form form').validator().on('submit', function(e){
                 if(!e.isDefaultPrevented()){
-                    var id = $('#idNasabah').val();
-                    if (save_method == 'add') url = "{{ url('nasabah') }}";
-                    else url = "{{ url('nasabah') . '/' }}" + id;
+                    var id = $('#idPinjaman').val();
+                    if (save_method == 'add') url = "{{ url('pinjaman') }}";
+                    else url = "{{ url('pinjaman') . '/' }}" + id;
                     
                     $.ajax({
                         url: url,
                         type: "POST",
-                        // data: $('#modal-form form').serialize(),
-                        data: new FormData($('#modal-form form')[0]),
-                        contentType: false,
-                        processData: false,
+                        data: $('#modal-form form').serialize(),
                         success: function($data){
                             $('#modal-form').modal('hide');
                             tables.ajax.reload();
+                            swal({
+                                title: 'Success!',
+                                text: "Berhasil memproses data!",
+                                type: 'success',
+                                timer: '1500'
+                            })
                         },
                         error: function(){
-                            alert('Ooops! Error occured!');
+                            swal({
+                                title: 'Oooppss!!',
+                                text: "Oooppss!",
+                                type: 'error',
+                                timer: '1500'
+                            })
                         }
                     });
 

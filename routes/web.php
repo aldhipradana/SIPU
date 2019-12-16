@@ -36,3 +36,5 @@ Route::get('/exportnasabah', 'NasabahController@exportPDF')->name('nasabah.expor
 Route::resource('pinjaman', 'PinjamanController');
 Route::get('api/pinjaman', 'PinjamanController@apiPinjaman')->name('api.pinjaman');
 Route::get('/pinjaman', 'PinjamanController@index')->name('pinjaman');
+Route::get('/pinjaman/getNasabah', 'PinjamanController@getNasabah')->name('getNasabah');
+Route::get('/exportpinjaman', 'PinjamanController@exportPDF')->name('pinjaman.export');
