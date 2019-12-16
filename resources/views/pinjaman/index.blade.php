@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 @section('content_header')
-    <h1>Nasabah List</h1>
+    <h1>Pinjaman List</h1>
 @stop
 
 
@@ -21,13 +21,15 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped" id="data-table">
+                    <table class="table table-striped" id="nasabah-table">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Email</th>
-                                <th>Photo</th>
+                                <th>Bunga(%)</th>
+                                <th>Jumlah</th>
+                                <th>Sisa</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -40,7 +42,7 @@
         </div>
     </div>
     
-    @include('pinjaman.form')
+    @include('nasabah.form')
 </div>
 
 @stop
@@ -51,15 +53,17 @@
     {{-- dataTables --}}
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
-        var tables =    $('#data-table').DataTable({
+        var tables =    $('#nasabah-table').DataTable({
                             processing: true,
                             serverSide: true,
-                            ajax: "{{ route('api.nasabah') }}",
+                            ajax: "{{ route('api.pinjaman') }}",
                             columns:[
-                                {data: 'idNasabah', name: 'idNasabah'},
-                                {data: 'firstname', name: 'firstname'},
-                                {data: 'email', name: 'email'},
-                                {data: 'show_photo', name: 'show_photo'},
+                                {data: 'idPinjaman', name: 'idPinjaman'},
+                                {data: 'nama_nasabah', name: 'nama_nasabah'},
+                                {data: 'bunga', name: 'bunga'},
+                                {data: 'jmlPinjam', name: 'jmlPinjam'},
+                                {data: 'sisaPinjam', name: 'sisaPinjam'},
+                                {data: 'status', name: 'status'},
                                 {data: 'action', name: 'action', orderable: false, searcable: false},
                             ]
                         })
