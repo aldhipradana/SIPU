@@ -143,6 +143,15 @@ class NasabahController extends Controller
             })->rawColumns(['show_photo', 'action'])->make(true);
     }
 
+    public function getNasabah(){
+        $nasabahs = nasabah::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $nasabahs
+        ]);
+    }
+
     public function exportPDF(){
         $nasabahs = nasabah::all();
         

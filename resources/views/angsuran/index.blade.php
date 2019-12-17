@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 @section('content_header')
-    <h1>Daftar Pinjaman</h1>
+    <h1>Daftar Angsuran</h1>
 @stop
 
 
@@ -16,8 +16,8 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Daftar Pinjaman
-                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Tambah Pinjaman</a>
+                    <h4>Daftar Angsuran
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Tambah Angsuran</a>
                     </h4>
                 </div>
                 <div class="panel-body">
@@ -25,24 +25,23 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Bunga(%)</th>
-                                <th>Jumlah</th>
-                                <th>Sisa</th>
-                                <th>Status</th>
+                                <th>Id Pinjaman</th>
+                                <th>Jumlah Pinjaman</th>
+                                <th>Jumlah Angsuran</th>
+                                <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                     
-                    <a href="/exportpinjaman" class="btn btn-info pull-left" style="margin-top: -8px;">Export Pinjaman</a>
+                    <a href="/exportangsuran" class="btn btn-info pull-left" style="margin-top: -8px;">Export Angsuran</a>
                 </div>
             </div>
         </div>
     </div>
     
-    @include('pinjaman.form')
+    @include('angsuran.form')
 </div>
 
 @stop
@@ -58,14 +57,13 @@
         var tables =    $('#nasabah-table').DataTable({
                             processing: true,
                             serverSide: true,
-                            ajax: "{{ route('api.pinjaman') }}",
+                            ajax: "{{ route('api.angsuran') }}",
                             columns:[
+                                {data: 'idAngsuran', name: 'idAngsuran'},
                                 {data: 'idPinjaman', name: 'idPinjaman'},
-                                {data: 'nama_nasabah', name: 'nama_nasabah'},
-                                {data: 'bunga', name: 'bunga'},
-                                {data: 'jmlPinjam', name: 'jmlPinjam'},
-                                {data: 'sisaPinjam', name: 'sisaPinjam'},
-                                {data: 'status', name: 'status'},
+                                {data: 'jml_pinjaman', name: 'jml_pinjaman'},
+                                {data: 'jmlAngsuran', name: 'jmlAngsuran'},
+                                {data: 'keterangan', name: 'keterangan'},
                                 {data: 'action', name: 'action', orderable: false, searcable: false},
                             ]
                         })
@@ -77,35 +75,33 @@
             $('#modal-form form')[0].reset();
             // $('.modal-title').text('Add Pinjaman');
             $.ajax({
-                url: "{{ route('getnasabah') }}",
+                url: "{{ route('getpinjaman') }}",
                 type: "GET",
                 dataType: "JSON",
                 success: function(response){
                     $('#modal-form').modal('show');
-                    $('.modal-title').text('Add Pinjaman');
+                    $('.modal-title').text('Add Angsuran');
+
                     var len = 0;
                     if(response['data'] != null){
                         len = response['data'].length;
-                        // console.log("data not null");
+                        console.log("data not null");
                     }
 
-                    if(len > 0 && flag != 1){
+                    if(len > 0){
                         // Read data and create <option >
-                        // console.log("len > 0");
+                        console.log("len > 0");
 
                         for(var i=0; i<len; i++){
 
-                            var id = response['data'][i].idNasabah;
-                            var name = response['data'][i].firstname;
+                            var id = response['data'][i].idPinjaman;
+                            var name = response['data'][i].idPinjaman;
 
                             var option = "<option value='"+id+"'>"+name+"</option>"; 
-                            flag = 1;
-                            console.log(flag);
-                            $("#idNasabah").append(option); 
+
+                            $("#idPinjaman").append(option); 
                         }
                     }
-
-                    // $('#idNasabah').val(data.idNasabah);
                         
                 },
                 error: function(){
@@ -119,49 +115,51 @@
             $('input[name=_method]').val('PATCH');
             $('#modal-form form')[0].reset();
             $.ajax({
-                url: "{{ url('pinjaman') }}" + '/' + id + "/edit",
+                url: "{{ url('angsuran') }}" + '/' + id + "/edit",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data){
                     $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Pinjaman');
+                    $('.modal-title').text('Edit Angsuran');
 
-                    $('#idPinjaman').val(data.idPinjaman);
-                    $('#bunga').val(data.bunga);
-                    $('#jmlPinjam').val(data.jmlPinjam);
-                    $('#status').val(data.status);
+                    $('#idAngsuran').val(data.idAngsuran);
+                    $('#jmlAngsuran').val(data.jmlAngsuran);
+                    $('#keterangan').val(data.keterangan);
 
                     $.ajax({
-                        url: "{{ route('getnasabah') }}",
+                        url: "{{ route('getpinjaman') }}",
                         type: "GET",
                         dataType: "JSON",
                         success: function(response){
+
                             var len = 0;
                             if(response['data'] != null){
                                 len = response['data'].length;
+                                console.log("data not null");
                             }
-                            if(len > 0 && flag != 1){
+
+                            for(var i=0; i<len; i++){
                                 // Read data and create <option >
+                                console.log("len > 0");
 
                                 for(var i=0; i<len; i++){
 
-                                    var id = response['data'][i].idNasabah;
-                                    var name = response['data'][i].firstname;
+                                    var id = response['data'][i].idPinjaman;
+                                    var name = response['data'][i].idPinjaman;
 
                                     var option = "<option value='"+id+"'>"+name+"</option>"; 
                                     flag = 1;
-                                    $("#idNasabah").append(option); 
+                                    $("#idPinjaman").append(option); 
                                 }
-                                
-
                             }
-                            $('#idNasabah').val(data.idNasabah);
+                            $('#idPinjaman').val(data.idPinjaman);
+                            
                         },
                         error: function(){
                             alert("No data found");
                         }
                     });
-
+                    
                 },
                 error: function(){
                     alert("No data found");
@@ -183,7 +181,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then( function(){
                 $.ajax({
-                    url: "{{ url('pinjaman') }}" + '/' + id,
+                    url: "{{ url('angsuran') }}" + '/' + id,
                     type: "POST",
                     data:   {'_method' : 'DELETE', '_token'  : csrf_token},
                     success : function(data){
@@ -211,9 +209,9 @@
         $(function(){
             $('#modal-form form').validator().on('submit', function(e){
                 if(!e.isDefaultPrevented()){
-                    var id = $('#idPinjaman').val();
-                    if (save_method == 'add') url = "{{ url('pinjaman') }}";
-                    else url = "{{ url('pinjaman') . '/' }}" + id;
+                    var id = $('#idAngsuran').val();
+                    if (save_method == 'add') url = "{{ url('angsuran') }}";
+                    else url = "{{ url('angsuran') . '/' }}" + id;
                     
                     $.ajax({
                         url: url,

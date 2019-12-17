@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\pinjaman;
+use App\angsuran;
 use App\nasabah;
+use App\pinjaman;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 use PDF;
 
-class PinjamanController extends Controller
+class AngsuranController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +19,7 @@ class PinjamanController extends Controller
      */
     public function index()
     {
-        return view('pinjaman.index');
+        return view('angsuran.index');
     }
 
     /**
@@ -40,14 +41,12 @@ class PinjamanController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'idNasabah' => $request['idNasabah'],
-            'bunga' => $request['bunga'],
-            'jmlPinjam' => $request['jmlPinjam'],
-            'sisaPinjam' => $request['jmlPinjam'],
-            'status' => $request['status']
+            'idPinjaman' => $request['idPinjaman'],
+            'jmlAngsuran' => $request['jmlAngsuran'],
+            'keterangan' => $request['keterangan']
         ];
         
-        return pinjaman::create($data);
+        return angsuran::create($data);
     }
 
     /**
@@ -69,9 +68,9 @@ class PinjamanController extends Controller
      */
     public function edit($id)
     {
-        $pinjaman = pinjaman::where('idPinjaman',$id)->first();
+        $angsuran = angsuran::where('idAngsuran',$id)->first();
 
-        return $pinjaman;
+        return $angsuran;
     }
 
     /**
@@ -83,16 +82,14 @@ class PinjamanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $pinjaman = pinjaman::where('idPinjaman',$id)->first();
+        $angsuran = angsuran::where('idAngsuran',$id)->first();
 
-        $pinjaman->idNasabah = $request['idNasabah'];
-        $pinjaman->bunga = $request['bunga'];
-        $pinjaman->jmlPinjam = $request['jmlPinjam'];
-        $pinjaman->sisaPinjam = $request['jmlPinjam'];
-        $pinjaman->status = $request['status'];
-        $pinjaman->update();
+        $angsuran->idPinjaman = $request['idPinjaman'];
+        $angsuran->jmlAngsuran = $request['jmlAngsuran'];
+        $angsuran->keterangan = $request['keterangan'];
+        $angsuran->update();
 
-        return $pinjaman;
+        return $angsuran;
     }
 
     /**
@@ -103,42 +100,44 @@ class PinjamanController extends Controller
      */
     public function destroy($id)
     {
-        $pinjaman = pinjaman::findOrFail($id);
+        $angsuran = angsuran::findOrFail($id);
 
-        pinjaman::destroy($id);
+        angsuran::destroy($id);
 
         return response()->json([
             'success' => true 
         ]);
     }
-    public function apiPinjaman(){
-        $pinjaman = pinjaman::all();
 
-        return DataTables::of($pinjaman)
-            ->addColumn('nama_nasabah', function($pinjaman){
-                return $pinjaman->nasabahs->firstname;
+    public function apiAngsuran(){
+        $angsuran = angsuran::all();
+
+        return DataTables::of($angsuran)
+            ->addColumn('jml_pinjaman', function($angsuran){
+                return $angsuran->pinjamans->jmlPinjam;
             })
-            ->addColumn( 'action', function($pinjaman){
-                return '<a onclick="editForm('. $pinjaman->idPinjaman .')" class="btn btn-primary btn-xs"><i class="fa fa-pen" aria-hidden="true"></i> Edit</a> ' .
-                '<a onclick="deleteData('. $pinjaman->idPinjaman .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a>'; 
+            ->addColumn( 'action', function($angsuran){
+                return '<a onclick="editForm('. $angsuran->idAngsuran .')" class="btn btn-primary btn-xs"><i class="fa fa-pen" aria-hidden="true"></i> Edit</a> ' .
+                '<a onclick="deleteData('. $angsuran->idAngsuran .')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</a>'; 
             })->make(true);
     }
-    public function getPinjaman(){
-        $pinjamans = pinjaman::all();
+    public function getAngsuran(){
+        $angsuran = angsuran::all();
 
         return response()->json([
             'success' => true,
-            'data' => $pinjamans
+            'data' => $angsuran
         ]);
     }
     public function exportPDF(){
-        $pinjamans = pinjaman::all();
+        $angsurans = angsuran::all();
         
-        $pdf = PDF::loadView('pinjaman/pdf', compact('pinjamans'));
+        $pdf = PDF::loadView('angsuran/pdf', compact('angsurans'));
         $pdf->setPaper('a4', 'potrait');
 
         return $pdf->stream();
 
-        // return view('pinjaman/pdf', compact('pinjamans'));
+        // return view('angsuran/pdf', compact('angsurans'));
     }
+
 }
