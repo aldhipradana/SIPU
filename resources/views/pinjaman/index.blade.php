@@ -71,42 +71,45 @@
         function addForm() {
             save_method = "add";
             $('input[name=_method]').val('POST');
-            $('#modal-form').modal('show');
+            // $('#modal-form').modal('show');
             $('#modal-form form')[0].reset();
-            $('.modal-title').text('Add Pinjaman');
-            // $.ajax({
-            //     url: "{{ url('pinjaman/getNasabah') }}",
-            //     type: "GET",
-            //     dataType: "JSON",
-            //     success: function(response){
-            //         $('#modal-form').modal('show');
-            //         $('.modal-title').text('Add Pinjaman');
+            // $('.modal-title').text('Add Pinjaman');
+            $.ajax({
+                url: "{{ route('getnasabah') }}",
+                type: "GET",
+                dataType: "JSON",
+                success: function(response){
+                    $('#modal-form').modal('show');
+                    $('.modal-title').text('Add Pinjaman');
 
-            //         var len = 0;
-            //         if(response['data'] != null){
-            //             len = response['data'].length;
-            //         }
+                    var len = 0;
+                    if(response['data'] != null){
+                        len = response['data'].length;
+                        console.log("data not null");
+                    }
 
-            //         if(len > 0){
-            //             // Read data and create <option >
-            //             for(var i=0; i<len; i++){
+                    if(len > 0){
+                        // Read data and create <option >
+                        console.log("len > 0");
 
-            //                 var id = response['data'][i].idNasabah;
-            //                 var name = response['data'][i].nasabahs.firstname;
+                        for(var i=0; i<len; i++){
 
-            //                 var option = "<option value='"+id+"'>"+name+"</option>"; 
+                            var id = response['data'][i].idNasabah;
+                            var name = response['data'][i].firstname;
 
-            //                 $("#idNasabah").append(option); 
-            //             }
-            //         }
+                            var option = "<option value='"+id+"'>"+name+"</option>"; 
 
-            //         $('#idNasabah').val(data.idNasabah);
+                            $("#idNasabah").append(option); 
+                        }
+                    }
+
+                    $('#idNasabah').val(data.idNasabah);
                         
-            //     },
-            //     error: function(){
-            //         alert("No data found");
-            //     }
-            // });
+                },
+                error: function(){
+                    alert("No data found");
+                }
+            });
         }
 
         function editForm(id){

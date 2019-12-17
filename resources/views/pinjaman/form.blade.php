@@ -18,10 +18,10 @@
                     <div class="form-group">
                         <label for="idNasabah" class="col-md-3 control-label">Nama Nasabah</label>
                         <div class="col-md-6">
-                            <input type="number" id="idNasabah" name="idNasabah" class="form-control" autofocus required>
-                            {{-- <select id="idNasabah" name="idNasabah" class="form-control" id="exampleFormControlSelect1">
+                            {{-- <input type="number" id="idNasabah" name="idNasabah" class="form-control" autofocus required> --}}
+                            <select id="idNasabah" name="idNasabah" class="form-control" id="exampleFormControlSelect1">
                                 
-                              </select> --}}
+                              </select>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

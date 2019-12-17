@@ -127,7 +127,10 @@ class PinjamanController extends Controller
     public function getNasabah(){
         $nasabahs = nasabah::all();
 
-        return $nasabahs;
+        return response()->json([
+            'success' => true,
+            'data' => $nasabahs
+        ]);
     }
 
     public function exportPDF(){
